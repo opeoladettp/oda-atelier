@@ -173,7 +173,92 @@
 
     <section class="recognition" id="recognition" aria-labelledby="recognition-title"><div class="recognition-inner reveal"><div><p class="eyebrow">06 — RECOGNITION</p><h2 id="recognition-title">The work speaks.<br><em>The journey continues.</em></h2></div><div class="recognition-awards"><div><span>2024</span><strong>VVS Luminary Award</strong><small>Fashion Designer Excellence Award</small></div><div><span>2022</span><strong>Fashion Finest Africa Award</strong><small>Industry recognition</small></div></div></div></section>
 
-    <section class="contact section-screen" id="contact" aria-labelledby="contact-title"><div class="contact-top reveal"><p class="eyebrow">LET’S MAKE SOMETHING MEANINGFUL</p><span>COLLABORATIONS / PRESS / ENQUIRIES</span></div><div class="contact-main reveal"><h2 id="contact-title">Good things<br>begin with<br><em>a conversation.</em></h2><a class="contact-link" href="mailto:adeyemioludayo97@gmail.com"><span>adeyemioludayo97@gmail.com</span><span class="material-symbols-outlined">north_east</span></a></div><div class="contact-bottom"><span>LAGOS, NIGERIA</span><span> LUTON, UNITED KINGDOM</span><span>OPEN TO THE WORLD</span></div></section>
+    <section class="contact section-screen" id="contact" aria-labelledby="contact-title">
+      <div class="contact-top reveal">
+        <p class="eyebrow">LET’S MAKE SOMETHING MEANINGFUL</p>
+        <span>COLLABORATIONS / PRESS / BESPOKE COMMISSIONS</span>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <h2 id="contact-title">Good things<br>begin with<br><em>a conversation.</em></h2>
+          <p class="large-copy">We welcome bespoke tailoring commissions, private atelier appointments, press loans, and international cultural collaborations.</p>
+          <div class="contact-channels">
+            <div class="channel-block">
+              <span class="eyebrow">DIRECT INQUIRIES</span>
+              <a class="contact-link" href="mailto:adeyemioludayo97@gmail.com">
+                <span>adeyemioludayo97@gmail.com</span>
+                <span class="material-symbols-outlined">north_east</span>
+              </a>
+            </div>
+            <div class="contact-locations">
+              <div>
+                <strong>LAGOS, NIGERIA</strong>
+                <span>Textile Research & Bespoke Tailoring<br>By Private Appointment</span>
+              </div>
+              <div>
+                <strong>LUTON / LONDON, UK</strong>
+                <span>Design Direction & Styling<br>International Consultations</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form-wrap reveal">
+          <form class="contact-form" id="contactForm" action="mailto:adeyemioludayo97@gmail.com" method="POST" enctype="text/plain">
+            <div class="form-header">
+              <span class="form-badge">ATELIER INQUIRY FORM</span>
+              <span class="form-required">* REQUIRED FIELDS</span>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="clientName">YOUR NAME *</label>
+                <input type="text" id="clientName" name="name" required placeholder="Full Name" autocomplete="name">
+              </div>
+              <div class="form-group">
+                <label for="clientEmail">EMAIL ADDRESS *</label>
+                <input type="email" id="clientEmail" name="email" required placeholder="client@address.com" autocomplete="email">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="clientPhone">TELEPHONE / WHATSAPP</label>
+                <input type="tel" id="clientPhone" name="phone" placeholder="+234 ... / +44 ..." autocomplete="tel">
+              </div>
+              <div class="form-group">
+                <label for="inquiryType">NATURE OF INQUIRY *</label>
+                <div class="select-wrap">
+                  <select id="inquiryType" name="inquiry_type" required>
+                    <option value="" disabled selected>Select nature of inquiry</option>
+                    <option value="Bespoke Tailoring & Haute Couture">Bespoke Tailoring & Haute Couture</option>
+                    <option value="Indigenous Textiles & Craft Collaboration">Indigenous Textiles & Craft Collaboration (Aṣọ Òkè / Adìrẹ)</option>
+                    <option value="Press, Editorial Loans & Media">Press, Editorial Loans & Media</option>
+                    <option value="Private Trunk Show / Exhibition">Private Trunk Show / Exhibition</option>
+                    <option value="General Conversation">General Conversation / Other</option>
+                  </select>
+                  <span class="material-symbols-outlined select-icon">expand_more</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="clientMessage">YOUR MESSAGE / PROJECT DETAILS *</label>
+              <textarea id="clientMessage" name="message" rows="4" required placeholder="Tell us about your project, silhouette preferences, timeline or commission concept..."></textarea>
+            </div>
+            <div class="form-submit-row">
+              <button type="submit" class="form-submit-btn" id="contactSubmitBtn">
+                <span>SUBMIT ENQUIRY</span>
+                <span class="material-symbols-outlined">north_east</span>
+              </button>
+              <span class="form-disclaimer">Inquiries are reviewed by the creative team and answered within 24–48 hours.</span>
+            </div>
+            <div class="form-feedback" id="formFeedback" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+      <div class="contact-bottom">
+        <span>LAGOS, NIGERIA</span>
+        <span>LUTON, UNITED KINGDOM</span>
+        <span>OPEN TO THE WORLD</span>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
