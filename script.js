@@ -83,4 +83,64 @@
       card.style.setProperty('--hover-y', '0px');
     });
   });
+
+  // Founder gallery interactive portrait switcher
+  const founderImg = document.querySelector('#founderActiveImg');
+  const founderLabel = document.querySelector('#founderActiveLabel');
+  const founderCounter = document.querySelector('#founderCounter');
+  const thumbs = document.querySelectorAll('.founder-thumb');
+  const stripCards = document.querySelectorAll('.founder-strip-card');
+  const prevBtn = document.querySelector('#founderPrev');
+  const nextBtn = document.querySelector('#founderNext');
+
+  if (founderImg && thumbs.length) {
+    let currentIndex = 0;
+    const portraits = Array.from(thumbs).map(t => ({
+      src: t.dataset.src,
+      label: t.dataset.label,
+      alt: t.querySelector('img') ? t.querySelector('img').alt : ''
+    }));
+
+    const setActivePortrait = (index) => {
+      currentIndex = (index + portraits.length) % portraits.length;
+      const item = portraits[currentIndex];
+
+      founderImg.style.opacity = '0';
+      setTimeout(() => {
+        founderImg.src = item.src;
+        founderImg.alt = item.alt;
+        if (founderLabel) founderLabel.textContent = item.label;
+        if (founderCounter) founderCounter.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(portraits.length).padStart(2, '0')}`;
+        founderImg.style.opacity = '1';
+      }, 150);
+
+      thumbs.forEach((t, i) => {
+        const active = i === currentIndex;
+        t.classList.toggle('active', active);
+        t.setAttribute('aria-selected', String(active));
+      });
+
+      stripCards.forEach((c, i) => {
+        c.classList.toggle('active', i === currentIndex);
+      });
+    };
+
+    thumbs.forEach(t => {
+      t.addEventListener('click', () => {
+        const idx = Number(t.dataset.index);
+        setActivePortrait(idx);
+      });
+    });
+
+    stripCards.forEach(c => {
+      c.addEventListener('click', () => {
+        const idx = Number(c.dataset.index);
+        setActivePortrait(idx);
+        founderImg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
+
+    if (prevBtn) prevBtn.addEventListener('click', () => setActivePortrait(currentIndex - 1));
+    if (nextBtn) nextBtn.addEventListener('click', () => setActivePortrait(currentIndex + 1));
+  }
 })();
