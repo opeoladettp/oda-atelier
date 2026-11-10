@@ -89,7 +89,6 @@
   const founderLabel = document.querySelector('#founderActiveLabel');
   const founderCounter = document.querySelector('#founderCounter');
   const thumbs = document.querySelectorAll('.founder-thumb');
-  const stripCards = document.querySelectorAll('.founder-strip-card');
   const prevBtn = document.querySelector('#founderPrev');
   const nextBtn = document.querySelector('#founderNext');
 
@@ -119,10 +118,6 @@
         t.classList.toggle('active', active);
         t.setAttribute('aria-selected', String(active));
       });
-
-      stripCards.forEach((c, i) => {
-        c.classList.toggle('active', i === currentIndex);
-      });
     };
 
     thumbs.forEach(t => {
@@ -132,37 +127,32 @@
       });
     });
 
-    stripCards.forEach(c => {
-      c.addEventListener('click', () => {
-        const idx = Number(c.dataset.index);
-        setActivePortrait(idx);
-        founderImg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      });
-    });
-
     if (prevBtn) prevBtn.addEventListener('click', () => setActivePortrait(currentIndex - 1));
     if (nextBtn) nextBtn.addEventListener('click', () => setActivePortrait(currentIndex + 1));
   }
 
-  // Contact Form Submission Handling
+  // Contact Form Submission — FormSend API
+  const FORMSEND_API_KEY = 'db23952ffd4a92740d4acfdd96f777006defaee62d59027600bc5282ede241e6';
+  const FORMSEND_ENDPOINT = 'https://api.formsend.ezeroandone.io/submit';
+
   const contactForm = document.querySelector('#contactForm');
   const formFeedback = document.querySelector('#formFeedback');
   const submitBtn = document.querySelector('#contactSubmitBtn');
 
   if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = contactForm.querySelector('#clientName').value.trim();
-      const email = contactForm.querySelector('#clientEmail').value.trim();
-      const phone = contactForm.querySelector('#clientPhone').value.trim();
-      const type = contactForm.querySelector('#inquiryType').value;
+
+      const name    = contactForm.querySelector('#clientName').value.trim();
+      const email   = contactForm.querySelector('#clientEmail').value.trim();
+      const phone   = contactForm.querySelector('#clientPhone').value.trim();
+      const type    = contactForm.querySelector('#inquiryType').value;
       const message = contactForm.querySelector('#clientMessage').value.trim();
 
-      if (!name || !email || !message) {
-        if (formFeedback) {
-          formFeedback.className = 'form-feedback error';
-          formFeedback.textContent = 'Please complete all required fields (*).';
-        }
+      // Client-side validation
+      if (!name || !email || !message || !type) {
+        formFeedback.className = 'form-feedback error';
+        formFeedback.textContent = 'Please complete all required fields (*).';
         return;
       }
 
@@ -171,30 +161,44 @@
         submitBtn.disabled = true;
         submitBtn.innerHTML = `<span>SENDING...</span><span class="material-symbols-outlined">hourglass_empty</span>`;
       }
+      if (formFeedback) formFeedback.className = 'form-feedback';
 
-      setTimeout(() => {
-        if (formFeedback) {
+      // Build subject and full message body for FormSend
+      const subject     = `[ODA Atelier] ${type} — ${name}`;
+      const fullMessage = `Inquiry Type: ${type}\nPhone / WhatsApp: ${phone || '—'}\n\n${message}`;
+
+      try {
+        const res = await fetch(FORMSEND_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            api_key: FORMSEND_API_KEY,
+            name,
+            email,
+            subject,
+            message: fullMessage,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
           formFeedback.className = 'form-feedback success';
           formFeedback.innerHTML = `THANK YOU, ${name.toUpperCase()}. YOUR ENQUIRY HAS BEEN RECEIVED BY THE ATELIER. OLUDAYO AND THE CREATIVE TEAM WILL RESPOND WITHIN 24–48 HOURS.`;
+          contactForm.reset();
+        } else {
+          formFeedback.className = 'form-feedback error';
+          formFeedback.textContent = data.message || 'Something went wrong. Please try again or email us directly at contact@odaatelier.com.ng';
         }
-
-        const subject = encodeURIComponent(`[ODA Atelier Inquiry] ${type || 'Bespoke Inquiry'} - ${name}`);
-        const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nInquiry Type: ${type}\n\nMessage:\n${message}`);
-        const mailtoUrl = `mailto:adeyemioludayo97@gmail.com?subject=${subject}&body=${body}`;
-
-        const mailLink = document.createElement('a');
-        mailLink.href = mailtoUrl;
-        mailLink.style.display = 'none';
-        document.body.appendChild(mailLink);
-        try { mailLink.click(); } catch (_) {}
-        setTimeout(() => mailLink.remove(), 1000);
-
-        contactForm.reset();
+      } catch (err) {
+        formFeedback.className = 'form-feedback error';
+        formFeedback.textContent = 'Network error. Please check your connection or email us at contact@odaatelier.com.ng';
+      } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalBtnHTML;
         }
-      }, 700);
+      }
     });
   }
 })();
